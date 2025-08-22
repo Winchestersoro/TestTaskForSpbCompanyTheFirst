@@ -45,10 +45,8 @@ const PaymentMatchForm: React.FC = () => {
   const [count] = useState(10);
 
   const handleMatch = () => {
-    if (selectedPayment && selectedInvoice) {
-      setSelectedPayment(null);
-      setSelectedInvoice(null);
-    }
+    setSelectedPayment(null);
+    setSelectedInvoice(null);
   };
 
   return (

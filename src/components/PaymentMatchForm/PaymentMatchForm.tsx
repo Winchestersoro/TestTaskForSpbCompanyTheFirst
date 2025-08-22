@@ -43,10 +43,16 @@ const PaymentMatchForm: React.FC = () => {
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
   const [page, setPage] = useState(1);
   const [count] = useState(10);
+  const [matchResult, setMatchResult] = useState<string>("");
 
   const handleMatch = () => {
-    setSelectedPayment(null);
-    setSelectedInvoice(null);
+    if (selectedPayment && selectedInvoice) {
+      setMatchResult(
+        `Платеж №${selectedPayment.id} сопоставлен со счетом №${selectedInvoice.id}`
+      );
+      setSelectedPayment(null);
+      setSelectedInvoice(null);
+    }
   };
 
   return (
@@ -54,6 +60,14 @@ const PaymentMatchForm: React.FC = () => {
       <Typography variant="h5" className={styles.title}>
         Сопоставление счетов и платежей
       </Typography>
+      {matchResult && (
+        <Typography
+          variant="subtitle1"
+          style={{ color: "#388e3c", marginBottom: "1vw", textAlign: "center" }}
+        >
+          {matchResult}
+        </Typography>
+      )}
       <div className={styles.tables}>
         <div className={styles.tableBox}>
           <InvoicesTable

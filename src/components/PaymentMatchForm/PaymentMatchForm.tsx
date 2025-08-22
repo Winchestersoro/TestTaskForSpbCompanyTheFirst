@@ -5,7 +5,7 @@ import MatchPanel from "../MatchPanel/MatchPanel";
 import Pagination from "../Pagination/Pagination";
 import type { Payment, Invoice } from "../../types";
 import styles from "./PaymentMatchForm.module.css";
-import { Typography } from "@mui/material";
+import { Typography, TextField } from "@mui/material";
 
 const payments: Payment[] = [
   {
@@ -44,6 +44,8 @@ const PaymentMatchForm: React.FC = () => {
   const [page, setPage] = useState(1);
   const [count] = useState(10);
   const [matchResult, setMatchResult] = useState<string>("");
+  const [paymentFilter, setPaymentFilter] = useState("");
+  const [invoiceFilter, setInvoiceFilter] = useState("");
 
   const handleMatch = () => {
     if (selectedPayment && selectedInvoice) {
@@ -55,6 +57,13 @@ const PaymentMatchForm: React.FC = () => {
     }
   };
 
+  const filteredPayments = payments.filter((p) =>
+    p.examineeName.toLowerCase().includes(paymentFilter.toLowerCase())
+  );
+  const filteredInvoices = invoices.filter((inv) =>
+    inv.examineeName.toLowerCase().includes(invoiceFilter.toLowerCase())
+  );
+
   return (
     <div className={styles.container}>
       <Typography variant="h5" className={styles.title}>
@@ -63,22 +72,50 @@ const PaymentMatchForm: React.FC = () => {
       {matchResult && (
         <Typography
           variant="subtitle1"
-          style={{ color: "#388e3c", marginBottom: "1vw", textAlign: "center" }}
+          style={{
+            color: "#388e3c",
+            marginBottom: "1vw",
+            textAlign: "center",
+          }}
         >
           {matchResult}
         </Typography>
       )}
       <div className={styles.tables}>
         <div className={styles.tableBox}>
+          <Typography variant="subtitle1" className={styles.label}>
+            Счета
+          </Typography>
+          <TextField
+            label="Фильтр по ФИО"
+            variant="outlined"
+            size="small"
+            value={invoiceFilter}
+            onChange={(e) => setInvoiceFilter(e.target.value)}
+            fullWidth
+            sx={{ mb: 2 }}
+          />
           <InvoicesTable
-            invoices={invoices}
+            invoices={filteredInvoices}
             onSelect={setSelectedInvoice}
             selectedId={selectedInvoice?.id}
           />
         </div>
         <div className={styles.tableBox}>
+          <Typography variant="subtitle1" className={styles.label}>
+            Платежи
+          </Typography>
+          <TextField
+            label="Фильтр по ФИО"
+            variant="outlined"
+            size="small"
+            value={paymentFilter}
+            onChange={(e) => setPaymentFilter(e.target.value)}
+            fullWidth
+            sx={{ mb: 2 }}
+          />
           <PaymentsTable
-            payments={payments}
+            payments={filteredPayments}
             onSelect={setSelectedPayment}
             selectedId={selectedPayment?.id}
           />

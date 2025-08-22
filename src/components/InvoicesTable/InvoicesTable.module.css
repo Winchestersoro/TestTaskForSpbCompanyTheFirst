@@ -1,0 +1,6 @@
+.tableContainer {
+  max-height: 420px;
+}
+.selectedRow {
+  background-color: #e3f2fd !important;
+}
